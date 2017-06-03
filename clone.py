@@ -22,12 +22,15 @@ for line in lines:
         measurement = float(line[3])
         measurements.append(measurement)
 
-#augumented_images, augumented_measurements = [], []
-#for image, measurement in zip(images, measurements):
-#    augumented_images.append(image)
-#    augumented_measurements.append(measurement)
-#    augumented_images.append(cv2.flip(image, 1))
-#    augumented_measurements.append(measurement*-1.0)
+augumented_images, augumented_measurements = [], []
+for image, measurement in zip(images, measurements):
+    augumented_images.append(image)
+    augumented_measurements.append(measurement)
+    augumented_images.append(cv2.flip(image, 1))
+    augumented_measurements.append(measurement*-1.0)
+
+images.extend(augumented_images)
+measurements.extend(augumented_measurements)
 
 X_train = np.array(images)
 y_train = np.array(measurements)
