@@ -2,6 +2,8 @@ import csv
 import cv2
 import numpy as np
 import sys
+from sklearn.model_selection import train_test_split
+from sklearn.utils import shuffle
 
 lines = []
 with open('data/driving_log.csv') as csvfile:
@@ -9,6 +11,8 @@ with open('data/driving_log.csv') as csvfile:
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
+
+train_set, validation_set = train_test_split(lines, test_size=0.2)
 
 images = []
 measurements = []
@@ -22,15 +26,15 @@ for line in lines:
         measurement = float(line[3])
         measurements.append(measurement)
 
-augumented_images, augumented_measurements = [], []
-for image, measurement in zip(images, measurements):
-    augumented_images.append(image)
-    augumented_measurements.append(measurement)
-    augumented_images.append(cv2.flip(image, 1))
-    augumented_measurements.append(measurement*-1.0)
+#augumented_images, augumented_measurements = [], []
+#for image, measurement in zip(images, measurements):
+#    augumented_images.append(image)
+#    augumented_measurements.append(measurement)
+#    augumented_images.append(cv2.flip(image, 1))
+#    augumented_measurements.append(measurement*-1.0)
 
-images.extend(augumented_images)
-measurements.extend(augumented_measurements)
+#images.extend(augumented_images)
+#measurements.extend(augumented_measurements)
 
 X_train = np.array(images)
 y_train = np.array(measurements)
