@@ -12,32 +12,49 @@ with open('data/driving_log.csv') as csvfile:
     for line in reader:
         lines.append(line)
 
-train_set, validation_set = train_test_split(lines, test_size=0.2)
-
-images = []
-measurements = []
+# Create tuples of (filepath, measurement, flip?) to feed into batch_gen
+data_set = []
 for line in lines:
     for i in range(3):
         source_path = line[i]
         filename = source_path.split('/')[-1]
         current_path = 'data/IMG/' + filename
-        image = cv2.imread(current_path)
-        images.append(image)
         measurement = float(line[3])
-        measurements.append(measurement)
+        data_set.append((current_path, measurement, True))
+        data_set.append((current_path, measurement, False))
 
-#augumented_images, augumented_measurements = [], []
-#for image, measurement in zip(images, measurements):
-#    augumented_images.append(image)
-#    augumented_measurements.append(measurement)
-#    augumented_images.append(cv2.flip(image, 1))
-#    augumented_measurements.append(measurement*-1.0)
+# Split the data set into training and validation
+train_set, valdation_set = train_test_split(data_set, test_size=0.2)
 
-#images.extend(augumented_images)
-#measurements.extend(augumented_measurements)
+# Generate a batch of images and measurements (tuple with image, measurement)
+def batch_gen(samples, batch_size):
+    n_samples = len(samples)
+    while True:
+        shuffle(samples)
+        for offset in range(0, n_samples, batch_size):
+            images = []
+            measurements = []
+            batch = samples[offset:offset + batch_size]
+            for sample in batch:
+                # get image path from line
+                image = cv2.imread(sample[0])
+                measurement = sample[1]
+                if sample[2]:
+                    image = cv2.flip(image, 1)
+                    measurements = measurement*-1.0
+                # append image to images
+                images.append(image)
+                # append measurement to measurements
+                measurements.append(measurement)
+            X_train = np.array(images)
+            y_train = np.array(measurements)
+            yield shuffle(X_train, y_train)
 
-X_train = np.array(images)
-y_train = np.array(measurements)
+batch_size = 32
+train_gen = batch_gen(train_set, batch_size)
+valid_gen = batch_gen(valdation_set, batch_size)
+train_steps = len(train_set)/batch_size
+valid_steps = len(valdation_set)/batch_size
 
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda
@@ -58,7 +75,8 @@ model.add(Dense(84))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
+# model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
+model.fit_generator(train_gen, steps_per_epoch=train_steps, validation_data=valid_gen, validation_steps=valid_steps, epochs=5)
 
 model.save('model.h5')
 sys.exit()
