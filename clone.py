@@ -41,7 +41,7 @@ def batch_gen(samples, batch_size):
                 measurement = sample[1]
                 if sample[2]:
                     image = cv2.flip(image, 1)
-                    measurements = measurement*-1.0
+                    measurement = measurement*-1.0
                 # append image to images
                 images.append(image)
                 # append measurement to measurements
