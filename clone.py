@@ -76,7 +76,7 @@ model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
 # model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
-model.fit_generator(train_gen, steps_per_epoch=train_steps, validation_data=valid_gen, validation_steps=valid_steps, epochs=5)
+model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, validation_steps=valid_steps, nb_epoch=5)
 
 model.save('model.h5')
 sys.exit()
