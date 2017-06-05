@@ -50,7 +50,7 @@ def batch_gen(samples, batch_size):
             y_train = np.array(measurements)
             yield shuffle(X_train, y_train)
 
-batch_size = 32
+batch_size = 128
 train_gen = batch_gen(train_set, batch_size)
 valid_gen = batch_gen(valdation_set, batch_size)
 train_steps = len(train_set)
@@ -62,6 +62,7 @@ from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
 
+# TODO: Try a different architecture
 model = Sequential()
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
 model.add(Lambda(lambda x: x / 255.0 - 0.5))
@@ -75,7 +76,6 @@ model.add(Dense(84))
 model.add(Dense(1))
 
 model.compile(loss='mse', optimizer='adam')
-# model.fit(X_train, y_train, validation_split=0.2, shuffle=True, nb_epoch=5)
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
 model.save('model.h5')
