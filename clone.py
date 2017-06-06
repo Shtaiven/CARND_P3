@@ -83,8 +83,6 @@ model = Sequential()
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(112, 224, 3)))
 model.add(ZeroPadding2D((56,0)))
 
-print(model._keras_shape)
-
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1,1)))
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
@@ -129,6 +127,9 @@ model.add(Dense(1000, name='dense_3'))
 model.add(Activation("softmax",name="softmax"))
 
 model.compile(loss='mse', optimizer='adam')
+
+print(model.get_layer(index=1).output_shape)
+
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
 model.save('model.h5')
