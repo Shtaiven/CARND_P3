@@ -81,8 +81,8 @@ model = Sequential()
 
 # Adjust image size to accomodate VGG 224x224 px
 model.add(Cropping2D(cropping=((35,14), (0,0)), input_shape=(112, 224, 3)))
-model.add(ZeroPadding2D(padding=(81,80,0,0)))
-model.add(Lambda(lambda x: x / 255.0 - 0.5))
+model.add(ZeroPadding2D(padding=(82,81,1,1)))
+# model.add(Lambda(lambda x: x / 255.0 - 0.5))
 
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1,1)))
@@ -131,7 +131,7 @@ model.compile(loss='mse', optimizer='adam')
 
 # Debug
 for layer in model.layers:
-    print('Layer %s: %s -> %s' % (str(layer), str(layer.input_shape), str(layer.output_shape)))
+    print('Layer %s: %s -> %s' % (str(type(layer)), str(layer.input_shape), str(layer.output_shape)))
 
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
