@@ -128,8 +128,9 @@ model.add(Activation("softmax",name="softmax"))
 
 model.compile(loss='mse', optimizer='adam')
 
-print(model.get_layer(index=1).output_shape)
-print(model.get_layer(name='conv1_1').input_shape) # Debug
+# Debug
+for layer in range(40):
+    print('Layer %d: %s' % (layer, str(model.get_layer(index=layer).output_shape)))
 
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
