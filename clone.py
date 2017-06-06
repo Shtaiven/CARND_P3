@@ -83,6 +83,8 @@ model = Sequential()
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(112, 224, 3)))
 model.add(ZeroPadding2D((56,0)))
 
+print(model._keras_shape)
+
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1,1)))
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
