@@ -39,7 +39,6 @@ def batch_gen(samples, batch_size):
                 # get image path from line
                 image = cv2.imread(sample[0])
                 image = cv2.resize(image, (224, 112))
-                print(image.shape()) # Debug
                 measurement = sample[1]
                 if sample[2]:
                     image = cv2.flip(image, 1)
