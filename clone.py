@@ -130,7 +130,7 @@ model.compile(loss='mse', optimizer='adam')
 
 # Debug
 for layer in range(40):
-    print('Layer %d: %s' % (layer, str(model.get_layer(index=layer).output_shape)))
+    print('Layer %d: %s -> %s' % (layer, str(model.get_layer(index=layer).input_shape), str(model.get_layer(index=layer).output_shape)))
 
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
