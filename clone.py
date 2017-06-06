@@ -81,7 +81,7 @@ model = Sequential()
 
 # Adjust image size to accomodate VGG 224x224 px
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(112, 224, 3)))
-model.add(ZeroPadding2D((56,0)))
+model.add(ZeroPadding2D(padding=(56,0)))
 
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1,1)))
@@ -129,6 +129,7 @@ model.add(Activation("softmax",name="softmax"))
 model.compile(loss='mse', optimizer='adam')
 
 print(model.get_layer(index=1).output_shape)
+print(model.get_layer(name='conv1_1').input_shape) # Debug
 
 model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5)
 
