@@ -81,7 +81,7 @@ model = Sequential()
 
 # Adjust image size to accomodate VGG 224x224 px
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(112,224,3)))
-model.add(ZeroPadding2D((77,0)))
+model.add(ZeroPadding2D((56,0)))
 
 model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
 model.add(ZeroPadding2D((1,1)))
