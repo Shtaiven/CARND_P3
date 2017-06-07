@@ -78,7 +78,7 @@ model.add(Dense(84))
 model.add(Dense(1))
 
 # Implement VGG
-model = Sequential()
+# model = Sequential()
 
 # Adjust image size to accomodate VGG 224x224 px
 # model.add(Cropping2D(cropping=((35,14), (0,0)), input_shape=(112, 224, 3)))
