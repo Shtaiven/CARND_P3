@@ -51,7 +51,7 @@ def batch_gen(samples, batch_size):
             y_train = np.array(measurements)
             yield X_train, y_train
 
-batch_size = 128
+batch_size = 32
 train_gen = batch_gen(train_set, batch_size)
 valid_gen = batch_gen(valdation_set, batch_size)
 train_steps = len(train_set)
