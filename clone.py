@@ -126,7 +126,7 @@ model.add(Dense(4096, activation='relu', name='dense_2'))
 model.add(Dropout(0.5))
 model.add(Dense(1000, name='dense_3'))
 # model.add(Activation("softmax",name="softmax"))
-model.add(Dense(1), name='dense_4')
+model.add(Dense(1, name='dense_4'))
 
 model.compile(loss='mse', optimizer='adam')
 
