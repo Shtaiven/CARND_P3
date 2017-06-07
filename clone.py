@@ -38,7 +38,7 @@ def batch_gen(samples, batch_size):
             for sample in batch:
                 # get image path from line
                 image = cv2.imread(sample[0])
-                image = cv2.resize(image, (224, 112))
+                # image = cv2.resize(image, (224, 112))
                 measurement = sample[1]
                 if sample[2]:
                     image = cv2.flip(image, 1)
@@ -49,7 +49,7 @@ def batch_gen(samples, batch_size):
                 measurements.append(measurement)
             X_train = np.array(images)
             y_train = np.array(measurements)
-            yield shuffle(X_train, y_train)
+            yield X_train, y_train
 
 batch_size = 128
 train_gen = batch_gen(train_set, batch_size)
@@ -125,7 +125,11 @@ model.add(Dropout(0.5))
 model.add(Dense(4096, activation='relu', name='dense_2'))
 model.add(Dropout(0.5))
 model.add(Dense(1000, name='dense_3'))
-model.add(Activation("softmax",name="softmax"))
+model.add(Dense(256, name='dense_4'))
+model.add(Dense(128, name='dense_5'))
+model.add(Dense(64, name='dense_6'))
+model.add(Dense(1, name='dense_7'))
+# model.add(Activation("softmax",name="softmax"))
 
 model.compile(loss='mse', optimizer='adam')
 
