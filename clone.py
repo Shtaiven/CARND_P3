@@ -54,8 +54,8 @@ def batch_gen(samples, batch_size):
 batch_size = 32
 train_gen = batch_gen(train_set, batch_size)
 valid_gen = batch_gen(valdation_set, batch_size)
-train_steps = len(train_set)
-valid_steps = len(valdation_set)
+train_steps = ceil(len(train_set)/batch_size)
+valid_steps = ceil(len(valdation_set)/batch_size)
 
 from keras.models import Sequential
 from keras.layers import Flatten, Dense, Lambda, Activation, Dropout
