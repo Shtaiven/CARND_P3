@@ -135,7 +135,7 @@ model.compile(loss='mse', optimizer='adam')
 for layer in model.layers:
     print('Layer %s: %s -> %s' % (str(type(layer)), str(layer.input_shape), str(layer.output_shape)))
 
-model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5, max_q_size=1)
+model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5, max_q_size=1, nb_worker=1)
 
 model.save('model.h5')
 sys.exit()
