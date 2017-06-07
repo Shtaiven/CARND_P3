@@ -39,7 +39,7 @@ def batch_gen(samples, batch_size):
             for sample in batch:
                 # get image path from line
                 image = cv2.imread(sample[0])
-                image = cv2.resize(image, (224, 112))
+                # image = cv2.resize(image, (224, 112))
                 measurement = sample[1]
                 if sample[2]:
                     image = cv2.flip(image, 1)
@@ -65,30 +65,30 @@ from keras.layers.pooling import MaxPooling2D
 from keras.layers import Cropping2D
 
 # TODO: Try a different architecture
-# model = Sequential()
-# model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
-# model.add(Lambda(lambda x: x / 255.0 - 0.5))
-# model.add(Convolution2D(6,5,5,activation='elu'))
-# model.add(MaxPooling2D())
-# model.add(Convolution2D(6,5,5,activation='elu'))
-# model.add(MaxPooling2D())
-# model.add(Flatten())
-# model.add(Dense(120))
-# model.add(Dense(84))
-# model.add(Dense(1))
+model = Sequential()
+model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
+model.add(Lambda(lambda x: x / 255.0 - 0.5))
+model.add(Convolution2D(6,5,5,activation='elu'))
+model.add(MaxPooling2D())
+model.add(Convolution2D(6,5,5,activation='elu'))
+model.add(MaxPooling2D())
+model.add(Flatten())
+model.add(Dense(120))
+model.add(Dense(84))
+model.add(Dense(1))
 
 # Implement VGG
 model = Sequential()
 
 # Adjust image size to accomodate VGG 224x224 px
-model.add(Cropping2D(cropping=((35,14), (0,0)), input_shape=(112, 224, 3)))
-model.add(ZeroPadding2D(padding=(82,81,1,1)))
+# model.add(Cropping2D(cropping=((35,14), (0,0)), input_shape=(112, 224, 3)))
+# model.add(ZeroPadding2D(padding=(82,81,1,1)))
 # model.add(Lambda(lambda x: x / 255.0 - 0.5))
 
-model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
-model.add(ZeroPadding2D((1,1)))
-model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
-model.add(MaxPooling2D((2,2), strides=(2,2)))
+# model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_1'))
+# model.add(ZeroPadding2D((1,1)))
+# model.add(Convolution2D(64, 3, 3, activation='relu', name='conv1_2'))
+# model.add(MaxPooling2D((2,2), strides=(2,2)))
 
 # model.add(ZeroPadding2D((1,1)))
 # model.add(Convolution2D(128, 3, 3, activation='relu', name='conv2_1'))
@@ -120,14 +120,14 @@ model.add(MaxPooling2D((2,2), strides=(2,2)))
 # model.add(Convolution2D(512, 3, 3, activation='relu', name='conv5_3'))
 # model.add(MaxPooling2D((2,2), strides=(2,2)))
 
-model.add(Flatten(name="flatten"))
-model.add(Dense(4096, activation='relu', name='dense_1'))
-model.add(Dropout(0.5))
-model.add(Dense(4096, activation='relu', name='dense_2'))
-model.add(Dropout(0.5))
-model.add(Dense(1000, name='dense_3'))
-# model.add(Activation("softmax",name="softmax"))
-model.add(Dense(1, name='dense_4'))
+# model.add(Flatten(name="flatten"))
+# model.add(Dense(4096, activation='relu', name='dense_1'))
+# model.add(Dropout(0.5))
+# model.add(Dense(4096, activation='relu', name='dense_2'))
+# model.add(Dropout(0.5))
+# model.add(Dense(1000, name='dense_3'))
+# # model.add(Activation("softmax",name="softmax"))
+# model.add(Dense(1, name='dense_4'))
 
 model.compile(loss='mse', optimizer='adam')
 
