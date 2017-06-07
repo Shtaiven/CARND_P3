@@ -4,6 +4,7 @@ import numpy as np
 import sys
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
+from math import ceil
 
 lines = []
 with open('data/driving_log.csv') as csvfile:
