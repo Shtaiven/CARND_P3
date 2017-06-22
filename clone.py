@@ -7,11 +7,18 @@ from sklearn.utils import shuffle
 from math import ceil
 
 lines = []
+lines_udacity = []
 with open('data/driving_log.csv') as csvfile:
     next(csvfile)
     reader = csv.reader(csvfile)
     for line in reader:
         lines.append(line)
+        
+with open('data_udacity/driving_log.csv') as csvfile:
+    next(csvfile)
+    reader = csv.reader(csvfile)
+    for line in reader:
+        lines_udacity.append(line)
 
 # Create tuples of (filepath, measurement, flip?) to feed into batch_gen
 data_set = []
@@ -20,6 +27,15 @@ for line in lines:
         source_path = line[i]
         filename = source_path.split('/')[-1]
         current_path = 'data/IMG/' + filename
+        measurement = float(line[3])
+        data_set.append((current_path, measurement, True))
+        data_set.append((current_path, measurement, False))
+        
+for line in lines_udacity:
+    for i in range(3):
+        source_path = line[i]
+        filename = source_path.split('/')[-1]
+        current_path = 'data_udacity/IMG/' + filename
         measurement = float(line[3])
         data_set.append((current_path, measurement, True))
         data_set.append((current_path, measurement, False))
