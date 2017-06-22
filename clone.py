@@ -66,8 +66,8 @@ from keras.layers import Cropping2D
 
 # TODO: Try a different architecture
 model = Sequential()
-model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
-model.add(Lambda(lambda x: x / 255.0 - 0.5))
+#model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
+model.add(Lambda(lambda x: x / 255.0 - 0.5,input_shape=(160,320,3)))
 model.add(Convolution2D(8,5,5,activation='elu',border_mode='valid',subsample=(2, 2)))
 model.add(Convolution2D(16,5,5,activation='elu',border_mode='valid',subsample=(2, 2)))
 model.add(Convolution2D(32,5,5,activation='elu',border_mode='valid',subsample=(2, 2)))
