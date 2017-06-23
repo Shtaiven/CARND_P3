@@ -30,7 +30,8 @@ for line in lines:
         measurement = float(line[3])
         data_set.append((current_path, measurement, True))
         data_set.append((current_path, measurement, False))
-        
+    
+# Load Udacity data as well to train on more data
 for line in lines_udacity:
     for i in range(3):
         source_path = line[i]
@@ -43,6 +44,7 @@ for line in lines_udacity:
 # Split the data set into training and validation
 train_set, valdation_set = train_test_split(data_set, test_size=0.2)
 
+# For information prposes, how many left, straight, or right turn images do I have?
 bin_angles = [0, 0, 0]
 for data in train_set:
     if data[1] > 0:
@@ -55,6 +57,7 @@ for data in train_set:
 print(bin_angles)
 
 # Generate a batch of images and measurements (tuple with image, measurement)
+# Image preprocessing is also done here
 def batch_gen(samples, batch_size):
     n_samples = len(samples)
     while True:
@@ -66,9 +69,9 @@ def batch_gen(samples, batch_size):
             for sample in batch:
                 # get image path from line
                 image = cv2.imread(sample[0])
-                # image = cv2.resize(image, (224, 112))
-                image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV)
+                image = cv2.cvtColor(image, cv2.COLOR_BGR2YUV) # YUV color space as suggested by the nVidia paper
                 measurement = sample[1]
+                # flip half of the images to generate more generalized data
                 if sample[2]:
                     image = cv2.flip(image, 1)
                     measurement = measurement*-1.0
@@ -80,13 +83,14 @@ def batch_gen(samples, batch_size):
             y_train = np.array(measurements)
             yield shuffle(X_train, y_train)
 
+# Parameters for the model
 batch_size = 32
 train_gen = batch_gen(train_set, batch_size)
 valid_gen = batch_gen(valdation_set, batch_size)
 train_steps = len(train_set)
 valid_steps = len(valdation_set)
 
-train = True
+train = True # Here for debugging
 
 if train:
     from keras.models import Sequential
@@ -95,10 +99,11 @@ if train:
     from keras.layers.pooling import MaxPooling2D
     from keras.layers import Cropping2D
 
-    # TODO: Try a different architecture
+    # Neural network model. This is inspired by LeNet and the incresisngly larger
+    # kernel windows of VGG
     model = Sequential()
-    model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
-    model.add(Lambda(lambda x: x / 255.0 - 0.5))
+    model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3))) # Image cropping
+    model.add(Lambda(lambda x: x / 255.0 - 0.5)) # Image normalization
     model.add(Convolution2D(8,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
     model.add(Convolution2D(16,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
     model.add(Convolution2D(32,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
@@ -118,5 +123,6 @@ if train:
 
     model.fit_generator(train_gen, samples_per_epoch=train_steps, validation_data=valid_gen, nb_val_samples=valid_steps, nb_epoch=5, max_q_size=1, nb_worker=1)
 
+    # Save the model
     model.save('./model.h5')
 sys.exit()
