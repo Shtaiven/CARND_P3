@@ -34,7 +34,7 @@ The goals / steps of this project are the following:
 #### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
-* model.py containing the script to create and train the model
+* clone.py containing the script to create and train the model
 * drive.py for driving the car in autonomous mode
 * model.h5 containing a trained convolution neural network 
 * project_writeup.md summarizing the results
@@ -49,19 +49,19 @@ An example of the car driving can be seen in the video `run1.mp4`.
 
 #### 3. Submission code is usable and readable
 
-The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
+The clone.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
 ### Model Architecture and Training Strategy
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24) 
+My model consists of a convolutional neural network with layers for cropping the image (line 105) and normalizing values (line 106), 3 2d convolutional layers with 5x5 kernel sizes and 8, 16, and 32 features respectively, and 2 3x3 2d convolution layers each with 64 features. The network can be seen in code lines 102 to 124.
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18). 
+The model includes RELU layers to introduce nonlinearity (seen as the activation option for the convolutional layers). 
 
 #### 2. Attempts to reduce overfitting in the model
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+The model was trained and validated on the Udacity dataset combined with data collected from my own driving in the simulator. The data set was made twice as large by reversing the image and angle data for all images and adding them to the data set. The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 #### 3. Model parameter tuning
 
@@ -69,7 +69,7 @@ The model used an adam optimizer, so the learning rate was not tuned manually (m
 
 #### 4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ... 
+Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, with a special focus on recording runs around curves and accross bridges. Left, Center, and Right camera angles were used for the training set. The colorspace of the dataset was transformed to the YUV color space.
 
 For details about how I created the training data, see the next section. 
 

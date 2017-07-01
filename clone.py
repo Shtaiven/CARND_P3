@@ -104,11 +104,17 @@ if train:
     model = Sequential()
     model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3))) # Image cropping
     model.add(Lambda(lambda x: x / 255.0 - 0.5)) # Image normalization
+
+    # 3 convolutional layers to extract features, all 5x5 kernel size, valid padding, 2x2 stride
     model.add(Convolution2D(8,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
     model.add(Convolution2D(16,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
     model.add(Convolution2D(32,5,5,activation='relu',border_mode='valid',subsample=(2, 2)))
+
+    # 2 convolutional layers to extract smaller features, 3x3 kernel size, valid padding
     model.add(Convolution2D(64,3,3,activation='relu',border_mode='valid'))
     model.add(Convolution2D(64,3,3,activation='relu',border_mode='valid'))
+
+    # Fully connected layers
     model.add(Flatten())
     model.add(Dense(120))
     model.add(Dense(60))
