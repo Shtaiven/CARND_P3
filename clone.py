@@ -6,8 +6,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle
 from math import ceil
 
-load_data = False
-train = False # Here for debugging
+load_data = True
+train = True # Here for debugging
 
 if load_data:
     lines = []
