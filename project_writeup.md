@@ -55,7 +55,7 @@ The clone.py file contains the code for training and saving the convolution neur
 
 #### 1. An appropriate model architecture has been employed
 
-My model consists of a convolutional neural network with layers for cropping the image (line 105) and normalizing values (line 106), 3 2d convolutional layers with 5x5 kernel sizes and 8, 16, and 32 features respectively, and 2 3x3 2d convolution layers each with 64 features. The network can be seen in code lines 102 to 124.
+My model consists of a convolutional neural network with layers for cropping the image (line 105) and normalizing values (line 106), 3 2d convolutional layers with 5x5 kernel sizes and 8, 16, and 32 features respectively, and 2 3x3 2d convolution layers each with 64 features. The network can be seen in code lines 105 to 125.
 
 The model includes RELU layers to introduce nonlinearity (seen as the activation option for the convolutional layers). 
 
@@ -65,7 +65,7 @@ The model was trained and validated on the Udacity dataset combined with data co
 
 #### 3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually (clone.py line 125).
 
 #### 4. Appropriate training data
 
@@ -91,11 +91,28 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+The final model architecture (clone.py lines 105-125) consisted of a convolution neural network with the following layers and layer sizes:
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
-
-![alt text][image1]
+**Layer Type** | **Shape**
+--- | ---
+Input | (160, 320, 3)
+Cropping | (90, 320, 3)
+Normalization | (90, 320, 3)
+Convolutional [5x5 kernel, valid, 2x2 step] | (43, 158, 8)
+Activation [ReLU] | (43, 158, 8)
+Convolutional [5x5 kernel, valid, 2x2 step] | (20, 77, 16)
+Activation [ReLU] | (20, 77, 16)
+Convolutional [5x5 kernel, valid, 2x2 step] | (8, 37, 32)
+Activation [ReLU] | (8, 37, 32)
+Convolutional [3x3 kernel, valid, 1x1 step] | (6, 35, 64)
+Activation [ReLU] | (6, 35, 64)
+Convolutional [3x3 kernel, valid, 1x1 step] | (4, 33, 64)
+Activation [ReLU] | (4, 33, 64)
+Fully Connected | (8448)
+Fully Connected | (120)
+Fully Connected | (60)
+Fully Connected | (30)
+Fully Connected | (1)
 
 #### 3. Creation of the Training Set & Training Process
 
@@ -106,7 +123,9 @@ To capture good driving behavior, I first recorded two laps on track one using c
 I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
 
 ![alt text][image3]
+
 ![alt text][image4]
+
 ![alt text][image5]
 
 Then I repeated this process on track two in order to get more data points.
@@ -114,6 +133,7 @@ Then I repeated this process on track two in order to get more data points.
 To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
 
 ![alt text][image6]
+
 ![alt text][image7]
 
 Etc ....
