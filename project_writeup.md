@@ -20,7 +20,7 @@ The goals / steps of this project are the following:
 
 [image1]: ./project_pics/example.jpg "Example Image"
 [image2]: ./project_pics/flipped.jpg "Flipped Image"
-[image3]: ./project_pics/croppedjpg "Cropped Image"
+[image3]: ./project_pics/cropped.jpg "Cropped Image"
 [image4]: ./project_pics/y_channel.jpg "Y Channel Image"
 [image5]: ./project_pics/u_channel.jpg "U Channel Image"
 [image6]: ./project_pics/v_channel.jpg "V Channel Image"
@@ -116,13 +116,19 @@ Fully Connected | (1)
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving, both original and flipped:
 
 ![alt text][image1]
 
 ![alt text][image2]
 
+Extra recordings were taken of the car riding around corners and near the dirt road and bridge.
+
+Instead of cropping the images in preprocessing, cropping was done as part of the model. Below is an example of an image as cropped by the model:
+
 ![alt text][image3]
+
+The 3 images below show the original image split into the YUV colorspace, which the images were converted to in preprocessing on line 76:
 
 ![alt text][image4]
 
@@ -130,11 +136,8 @@ To capture good driving behavior, I first recorded two laps on track one using c
 
 ![alt text][image6]
 
-Etc ....
+After the collection process, I had 122,142 data points.
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The number of epochs was chosen to be five as losses were no longer decreasing and accuracy no longer increased at this point. I used an adam optimizer so that manually training the learning rate wasn't necessary.
